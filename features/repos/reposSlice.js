@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit'
 import axios from 'axios'
-export const getRepos = createAsyncThunk("repos/getRepos", async () => {
+export const getRepos = createAsyncThunk("repos/getRepos", async (username = "uutbudiarto2012") => {
     const response = await axios({
-        url: process.env.githubApi + "/users/uutbudiarto2012/repos",
+        url: process.env.githubApi + `/users/${username}/repos`,
         method: "GET",
         headers: {
             "Authorization": "Bearer " + process.env.githubToken
@@ -11,6 +11,7 @@ export const getRepos = createAsyncThunk("repos/getRepos", async () => {
     return response.data;
 })
 
+
 const repoEntity = createEntityAdapter({
     selectId: (repos) => repos.id
 })
@@ -18,14 +19,22 @@ const repoEntity = createEntityAdapter({
 
 export const reposSlice = createSlice({
     name: 'repos',
-    initialState: repoEntity.getInitialState(),
+    initialState: {
+        entities: [],
+        status: null,
+    },
     extraReducers: {
+        [getRepos.pending]: (state, action) => {
+            state.status = 'loading'
+        },
         [getRepos.fulfilled]: (state, action) => {
-            repoEntity.setAll(state, action.payload)
+            state.entities = action.payload
+            state.status = 'success'
+        },
+        [getRepos.rejected]: (state, action) => {
+            state.status = 'failed'
         }
     }
 })
 
-
-export const repoSelectors = repoEntity.getSelectors(state => state.repos)
 export default reposSlice.reducer
