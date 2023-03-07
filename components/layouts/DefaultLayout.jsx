@@ -6,7 +6,7 @@ const DefaultLayout = ({ children }) => {
   return (
     <div className='bg-slate-50'>
       <Navbar />
-      <main className='wrapper'>{children}</main>
+      <main className='wrapper min-h-screen'>{children}</main>
       <Footer />
     </div>
   )

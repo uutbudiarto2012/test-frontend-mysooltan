@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Repo from '../molecules/Repo'
 import Loader from '../molecules/Repo/Loader'
+import NotFoundRepo from '../molecules/Repo/NotFoundRepo'
 import SearchForm from '../molecules/SerachForm'
 
 const Repos = () => {
@@ -11,7 +12,6 @@ const Repos = () => {
   useEffect(() => {
     dispatch(getRepos())
   }, [dispatch])
-
   return (
     <div>
       <SearchForm />
@@ -20,6 +20,11 @@ const Repos = () => {
         {repos.status === 'success' &&
           repos?.entities?.map(item => (
             <Repo
+              size={item?.size}
+              clone_url={item?.clone_url}
+              stargazers_count={item?.stargazers_count}
+              watchers_count={item?.watchers_count}
+              forks_count={item?.forks_count}
               avatar={item?.owner?.avatar_url}
               language={item?.language}
               username={item?.owner?.login}
@@ -29,6 +34,10 @@ const Repos = () => {
             />
           ))}
       </div>
+      {repos.status === 'success' && repos?.entities.length === 0 && (
+        <NotFoundRepo type='repo' />
+      )}
+      {repos.status === 'failed' && <NotFoundRepo type='user' />}
     </div>
   )
 }

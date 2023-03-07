@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 export const getRepos = createAsyncThunk("repos/getRepos", async (username = "uutbudiarto2012") => {
     const response = await axios({
         url: process.env.githubApi + `/users/${username}/repos`,
@@ -12,11 +12,6 @@ export const getRepos = createAsyncThunk("repos/getRepos", async (username = "uu
 })
 
 
-const repoEntity = createEntityAdapter({
-    selectId: (repos) => repos.id
-})
-
-
 export const reposSlice = createSlice({
     name: 'repos',
     initialState: {
@@ -24,14 +19,14 @@ export const reposSlice = createSlice({
         status: null,
     },
     extraReducers: {
-        [getRepos.pending]: (state, action) => {
+        [getRepos.pending]: (state) => {
             state.status = 'loading'
         },
         [getRepos.fulfilled]: (state, action) => {
             state.entities = action.payload
             state.status = 'success'
         },
-        [getRepos.rejected]: (state, action) => {
+        [getRepos.rejected]: (state) => {
             state.status = 'failed'
         }
     }

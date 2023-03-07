@@ -7,8 +7,16 @@ import { useDispatch } from 'react-redux'
 const SearchForm = () => {
   const [username, setUsername] = useState('uutbudiarto2012')
   const dispatch = useDispatch()
+
+  const handleSearch = e => {
+    e.preventDefault()
+    dispatch(getRepos(username ? username : 'uutbudiarto2012'))
+  }
   return (
-    <div className='grid items-center md:grid-cols-2 pb-4'>
+    <form
+      onSubmit={handleSearch}
+      className='grid items-center md:grid-cols-2 pb-4'
+    >
       <h2 className='mb-4 text-slate-600 font-semibold text-xl'>
         Public Repositories
       </h2>
@@ -19,9 +27,9 @@ const SearchForm = () => {
             placeholder='username github'
           />
         </div>
-        <Button onClick={() => dispatch(getRepos(username))} label='Search' />
+        <Button label='Search' />
       </div>
-    </div>
+    </form>
   )
 }
 
