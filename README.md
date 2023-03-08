@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+Silahkan ubah file .env.local.example menjadi .env.local
+kemudian masukan value pada :
+
+```bash
+GH_TOKEN=TOKEN-GITHUB
+GH_API=BASEURL API GITHUB
+```
+
 ## Getting Started
 
 First, run the development server:
